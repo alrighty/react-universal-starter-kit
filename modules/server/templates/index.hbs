@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{{title}}}</title>
+    {{#each styles}}
+    <link rel="stylesheet" href={{{this}}}></script>
+    {{/each}}
+  </head>
+  <body>
+    <div id="root">{{{content}}}</div>
+    <script type="text/javascript">
+      {{#if state}}
+        window.__INITIAL_STATE__ = {{{state}}};
+      {{/if}}
+    </script>
+    {{#each scripts}}
+    <script src={{{this}}}></script>
+    {{/each}}
+  </body>
+</html>

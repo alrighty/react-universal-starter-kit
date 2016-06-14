@@ -1,0 +1,13 @@
+node_modules/
+public/assets
+stats.json
+.DS_Store
+.idea/
+~swp
+*.log
+/*.iml
+/static/
+*.bat
+*.orig
+/*.bat
+.vscode/*
