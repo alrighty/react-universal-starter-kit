@@ -1,7 +1,7 @@
 module.exports = {
   server: {
-    host: 'SERVER_HOST',
-    port: 'SERVER_PORT'
+    host: 'HOST',
+    port: 'PORT'
   },
   mongodb: {
     uri: 'MONGODB_URI'
