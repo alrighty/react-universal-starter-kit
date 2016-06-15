@@ -8,7 +8,8 @@
     "build": "npm run clean && webpack --config webpack/config.prod.js -p --json > stats.json",
     "start": "BABEL_DISABLE_CACHE=1 node modules/server",
     "start:dev": "NODE_ENV=development npm start",
-    "start:prod": "NODE_ENV=production npm start"
+    "start:prod": "NODE_ENV=production npm start",
+    "heroku-postbuild": "npm run build"
   },
   "author": "",
   "license": "MIT",
