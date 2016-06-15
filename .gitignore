@@ -1,6 +1,9 @@
 node_modules/
 public/assets
 stats.json
+config/
+!config/default.js
+!config/custom-environment-variables.js
 .DS_Store
 .idea/
 ~swp

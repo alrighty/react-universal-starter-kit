@@ -1,9 +1,9 @@
-import { createFetch, base, accept, parseJSON } from 'http-client'
+import { createFetch, base, accept, parseJSON, onResponse } from 'http-client'
 import { cookieJar } from 'http-client-cookie-jar'
 import { Cookie, CookieJar } from 'tough-cookie'
+import config from 'config'
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || '8080';
+const { host, port } = config.server
 
 const pushCookiesInJar = (jar, url, cookies) => {
   Object.keys(cookies).forEach((name) => {
@@ -15,6 +15,17 @@ const pushCookiesInJar = (jar, url, cookies) => {
   })
 }
 
+const catchError = () => onResponse(response => {
+  if (response.ok) {
+    return response
+  }
+  const { jsonData = {} } = response
+  throw new Error(
+    jsonData.message ||
+    response.statusText
+  )
+})
+
 export default function createServerFetch({ cookies = {} }) {
   const url = `http://${host}:${port}`
   const jar = new CookieJar()
@@ -25,6 +36,7 @@ export default function createServerFetch({ cookies = {} }) {
     base(url),
     accept('application/json'),
     cookieJar(jar),
-    parseJSON()
+    parseJSON(),
+    catchError()
   )
 }

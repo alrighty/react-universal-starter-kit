@@ -1,27 +1,52 @@
-import path from 'path';
-import exphbs from 'express-handlebars';
-import express from 'express';
+import path from 'path'
+import exphbs from 'express-handlebars'
+import config from 'config'
+import express from 'express'
+import session from 'express-session'
 import cookieParser from 'cookie-parser'
+import connectMongo from 'connect-mongo'
 import devErrorHandler from 'errorhandler'
 
+import mongoose from 'mongoose';
+
 import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddlevare from 'webpack-hot-middleware';
-import webpackDevConfig from '../../webpack/config.dev';
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddlevare from 'webpack-hot-middleware'
+import webpackDevConfig from '../../webpack/config.dev'
 
-import { staticAssets, devAssets } from './utils/assets';
-import { sendPage, devSendPage } from './page';
+import { staticAssets, devAssets } from './utils/assets'
+import { sendPage, devSendPage } from './page'
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || '8080';
+import * as routes from './routes'
 
-const statsFile = path.resolve(__dirname, '../../stats.json');
-const publicDir = path.resolve(__dirname, '../../public');
+const { host, port } = config.server
+
+const statsFile = path.resolve(__dirname, '../../stats.json')
+const publicDir = path.resolve(__dirname, '../../public')
+
+// Connect to MongoDB
+mongoose.connect(config.mongodb.uri)
+
+// Get Mongo Sesion storage
+const MongoStorage = connectMongo(session)
 
 const app = express();
 
-// Cookie
+// Session and Cookie
 app.use(cookieParser())
+app.use(session({
+  key: config.session.key,
+  secret: config.session.secret,
+  cookie: config.cookie,
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStorage({
+    mongooseConnection: mongoose.connection,
+  })
+}))
+
+// API
+app.use('/api', routes.api);
 
 // Templates
 app.engine('hbs', exphbs({ extname: '.hbs' }));

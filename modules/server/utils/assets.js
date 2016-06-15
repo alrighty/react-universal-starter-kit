@@ -66,23 +66,23 @@ export const devAssets = (webpackCompiler) => {
 
   const waitUntilDone = (callback) => {
     if (!bundle) {
-      callbacks.push(callback);
+      callbacks.push(callback)
     } else {
-      callback();
+      callback()
     }
   }
 
   webpackCompiler.plugin('done', (stats) => {
-    bundle = createBundle(stats.toJson());
+    bundle = createBundle(stats.toJson())
     while(callbacks.length) {
-      callbacks.shift().call();
+      callbacks.shift().call()
     }
   })
 
   return (req, res, next) => {
     waitUntilDone(() => {
-      req.bundle = bundle;
-      next();
+      req.bundle = bundle
+      next()
     });
   }
 }

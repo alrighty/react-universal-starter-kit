@@ -15,6 +15,9 @@ require('babel-register')({
     ['module-alias', [{
       expose: 'app',
       src: path.resolve(__dirname, '../../modules/app')
+    }, {
+      expose: 'server',
+      src: path.resolve(__dirname, '../../modules/server')
     }]],
     ['webpack-loaders', {
       'config': path.resolve(__dirname, '../../webpack/config.node'),

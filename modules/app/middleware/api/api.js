@@ -47,7 +47,7 @@ export default options => store => next => action => {
     return next(action);
   }
 
-  const { fetch } = options;
+  const { fetch, prefix = '/api' } = options;
 
   if (!fetch) {
     throw new Error('Custom fetch method is not specified.');
@@ -56,12 +56,14 @@ export default options => store => next => action => {
   let { method, endpoint } = callAPI;
   const { schema, formatter, types, data } = callAPI;
 
-
   if (!method) {
     method = 'GET';
   }
+  if (typeof endpoint === 'string') {
+    endpoint = prefix + endpoint
+  }
   if (typeof endpoint === 'function') {
-    endpoint = endpoint(store.getState());
+    endpoint = prefix + endpoint(store.getState())
   }
 
   if (typeof method !== 'string') {
