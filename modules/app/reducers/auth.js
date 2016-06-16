@@ -53,7 +53,7 @@ export default function(state = initialState, action) {
       ...initialState,
       error
     };
-
+  
   default:
       return state;
   }

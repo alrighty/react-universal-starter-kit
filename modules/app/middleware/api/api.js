@@ -5,7 +5,7 @@ import { stringify } from 'query-string';
 export const CALL_API = Symbol('Call API');
 
 function fetchWithQuery(fetch, method, endpoint, data) {
-  return fetch(endpoint + '?' + stringify(data), {
+  return fetch(endpoint + (data ? '?' + stringify(data) : ''), {
     type: method
   })
 }
@@ -53,11 +53,14 @@ export default options => store => next => action => {
     throw new Error('Custom fetch method is not specified.');
   }
 
-  let { method, endpoint } = callAPI;
-  const { schema, formatter, types, data } = callAPI;
+  let { method, formatter, endpoint } = callAPI;
+  const { schema, types, data } = callAPI;
 
   if (!method) {
     method = 'GET';
+  }
+  if (!formatter) {
+    formatter = (data) => data
   }
   if (typeof endpoint === 'string') {
     endpoint = prefix + endpoint
