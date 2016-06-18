@@ -7,9 +7,20 @@
     "node": true
   },
   "rules": {
+    semi: [2, "never"],
+    comma-dangle: [2, "never"],
+    no-shadow: 0
   },
   "plugins": [
+    "import",
     "babel",
     "react"
-  ]
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        config: "./webpack/config.node.js"
+      }
+    }
+  }
 }

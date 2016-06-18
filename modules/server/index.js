@@ -1,8 +1,8 @@
-var path = require('path');
+const path = require('path')
 // Global fetch
-require('isomorphic-fetch');
+require('isomorphic-fetch')
 // Babel polyfill
-require('babel-polyfill');
+require('babel-polyfill')
 // Init Babel register
 require('babel-register')({
   presets: ['es2015', 'stage-0', 'react'],
@@ -20,9 +20,9 @@ require('babel-register')({
       src: path.resolve(__dirname, '../../modules/server')
     }]],
     ['webpack-loaders', {
-      'config': path.resolve(__dirname, '../../webpack/config.node'),
-      'verbose': false
+      config: path.resolve(__dirname, '../../webpack/config.node'),
+      verbose: false
     }]]
-});
+})
 // Start server
-require('./server');
+require('./server')

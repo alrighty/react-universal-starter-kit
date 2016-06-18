@@ -41,23 +41,22 @@ export const sendPage = async (req, res) => {
         } else if (redirectLocation) {
           res.redirect(302, redirectLocation.pathname + redirectLocation.search)
         } else if (renderProps) {
-
           // Fetch components data
-          await fetchAsyncData(renderProps.components, { store });
+          await fetchAsyncData(renderProps.components, { store })
 
-          const state = serialize(store.getState());
+          const state = serialize(store.getState())
 
           // Render app
           const content = renderToString(
             <Provider store={store}>
-              <RouterContext {...renderProps}/>
+              <RouterContext {...renderProps} />
             </Provider>
-          );
+          )
 
           // Assets
-          const chunks = ['common', 'main'];
-          const styles = req.bundle.getStyleAssets(chunks);
-          const scripts = req.bundle.getScriptAssets(chunks);
+          const chunks = ['common', 'main']
+          const styles = req.bundle.getStyleAssets(chunks)
+          const scripts = req.bundle.getScriptAssets(chunks)
 
           // Render page
           res.render('index', {
@@ -66,13 +65,13 @@ export const sendPage = async (req, res) => {
             scripts,
             content,
             state
-          });
+          })
         }
-      } catch(error) {
+      } catch (error) {
         res.status(500).send(error.message)
       }
     })
-  } catch(error) {
+  } catch (error) {
     res.status(500).send(error.message)
   }
 }
