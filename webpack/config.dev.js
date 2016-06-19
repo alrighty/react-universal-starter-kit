@@ -1,11 +1,11 @@
-var path = require('path');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
+const path = require('path')
+const webpack = require('webpack')
+const autoprefixer = require('autoprefixer')
 
 module.exports = {
   devtool: 'eval',
   entry: {
-    'main': [
+    main: [
       'webpack-hot-middleware/client',
       './modules/app/index.js'
     ]
@@ -27,7 +27,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js'],
     alias: {
-      app: path.resolve(__dirname, '../modules/app')
+      app: path.resolve(__dirname, '../modules/app'),
+      server: path.resolve(__dirname, '../modules/server')
     }
   },
   module: {
@@ -48,4 +49,4 @@ module.exports = {
   postcss: [
     autoprefixer({ browsers: ['last 2 versions'] })
   ]
-};
+}

@@ -15,8 +15,8 @@ const User = new mongoose.Schema({
     email: String,
     token: String
   }
-});
+})
 
 User.plugin(normalizeSchema)
 
-export default mongoose.model('users', User);
+export default mongoose.model('users', User)

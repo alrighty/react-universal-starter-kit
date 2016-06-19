@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'server/passport'
 import auth from './auth'
 
-const router = express.Router()
+const router = express.Router() // eslint-disable-line new-cap
 
 // Initialize passport
 router.use(passport.initialize())

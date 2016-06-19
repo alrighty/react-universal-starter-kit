@@ -15,7 +15,7 @@ import 'babel-polyfill'
 const store = configureStore({
   history: browserHistory,
   fetch: createClientFetch(),
-  initialState: window.__INITIAL_STATE__
+  initialState: window.__INITIAL_STATE__ // eslint-disable-line no-underscore-dangle
 })
 const history = syncHistoryWithStore(browserHistory, store)
 const mountNode = document.getElementById('root')

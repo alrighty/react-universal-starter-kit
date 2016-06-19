@@ -7,5 +7,5 @@ export const serializeUser = (user, done) => {
 export const deserializeUser = (id, done) => {
   User.findById(id, (err, user) => {
     done(err, user)
-  });
+  })
 }

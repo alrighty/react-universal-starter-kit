@@ -1,5 +1,5 @@
-import fs from 'fs';
-import invariant from 'invariant';
+import fs from 'fs'
+import invariant from 'invariant'
 
 const createBundle = (webpackStats) => {
   const { publicPath, assetsByChunkName } = webpackStats
@@ -7,8 +7,8 @@ const createBundle = (webpackStats) => {
   const createURL = (asset) =>
     publicPath + asset
 
-  const getAssets = (chunks = [ 'main' ]) =>
-    (Array.isArray(chunks) ? chunks : [ chunks ]).reduce((memo, chunk) => (
+  const getAssets = (chunks = ['main']) =>
+    (Array.isArray(chunks) ? chunks : [chunks]).reduce((memo, chunk) => (
       memo.concat(assetsByChunkName[chunk] || [])
     ), [])
 
@@ -50,7 +50,7 @@ export const staticAssets = (webpackStatsFile) => {
   const bundle = createBundle(stats)
 
   return (req, res, next) => {
-    req.bundle = bundle
+    req.bundle = bundle // eslint-disable-line no-param-reassign
     next()
   }
 }
@@ -61,8 +61,8 @@ export const staticAssets = (webpackStatsFile) => {
  * webpack-dev-middleware). Should only be used in dev.
  */
 export const devAssets = (webpackCompiler) => {
-  const callbacks = [];
-  let bundle;
+  const callbacks = []
+  let bundle
 
   const waitUntilDone = (callback) => {
     if (!bundle) {
@@ -74,15 +74,15 @@ export const devAssets = (webpackCompiler) => {
 
   webpackCompiler.plugin('done', (stats) => {
     bundle = createBundle(stats.toJson())
-    while(callbacks.length) {
+    while (callbacks.length) {
       callbacks.shift().call()
     }
   })
 
   return (req, res, next) => {
     waitUntilDone(() => {
-      req.bundle = bundle
+      req.bundle = bundle // eslint-disable-line no-param-reassign
       next()
-    });
+    })
   }
 }

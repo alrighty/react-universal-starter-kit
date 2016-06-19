@@ -1,4 +1,4 @@
-var path = require('path');
+const path = require('path')
 
 module.exports = {
   output: {
@@ -7,7 +7,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js'],
     alias: {
-      app: path.resolve(__dirname, '../modules/app')
+      app: path.resolve(__dirname, '../modules/app'),
+      server: path.resolve(__dirname, '../modules/server')
     }
   },
   module: {
@@ -16,4 +17,4 @@ module.exports = {
       loader: 'css-loader/locals'
     }]
   }
-};
+}

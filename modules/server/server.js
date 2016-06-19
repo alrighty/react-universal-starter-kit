@@ -7,9 +7,9 @@ import cookieParser from 'cookie-parser'
 import connectMongo from 'connect-mongo'
 import devErrorHandler from 'errorhandler'
 
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-import webpack from 'webpack';
+import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddlevare from 'webpack-hot-middleware'
 import webpackDevConfig from '../../webpack/config.dev'
@@ -30,7 +30,7 @@ mongoose.connect(config.mongodb.uri)
 // Get Mongo Sesion storage
 const MongoStorage = connectMongo(session)
 
-const app = express();
+const app = express()
 
 // Session and Cookie
 app.use(cookieParser())
@@ -41,35 +41,35 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   store: new MongoStorage({
-    mongooseConnection: mongoose.connection,
+    mongooseConnection: mongoose.connection
   })
 }))
 
 // API
-app.use('/api', routes.api);
+app.use('/api', routes.api)
 
 // Templates
-app.engine('hbs', exphbs({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'templates'));
+app.engine('hbs', exphbs({ extname: '.hbs' }))
+app.set('view engine', 'hbs')
+app.set('views', path.join(__dirname, 'templates'))
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(publicDir));
-  app.use(staticAssets(statsFile));
-  app.use(sendPage);
+  app.use(express.static(publicDir))
+  app.use(staticAssets(statsFile))
+  app.use(sendPage)
 } else {
-  const compiler = webpack(webpackDevConfig);
+  const compiler = webpack(webpackDevConfig)
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackDevConfig.output.publicPath,
     noInfo: true
-  }));
-  app.use(webpackHotMiddlevare(compiler));
+  }))
+  app.use(webpackHotMiddlevare(compiler))
   app.use(devErrorHandler())
-  app.use(express.static(publicDir));
-  app.use(devAssets(compiler));
-  app.use(devSendPage);
+  app.use(express.static(publicDir))
+  app.use(devAssets(compiler))
+  app.use(devSendPage)
 }
 
 app.listen(port, host, () => {
-  console.log(`Server listening on http://${host}:${port}, Ctrl+C to stop`)
+  console.log(`Server listening on http://${host}:${port}, Ctrl+C to stop`) // eslint-disable-line no-console
 })

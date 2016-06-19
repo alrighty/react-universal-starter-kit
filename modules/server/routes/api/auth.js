@@ -2,7 +2,7 @@ import express from 'express'
 import passport from 'server/passport'
 import ensureLoggedIn from 'server/utils/ensureLoggedIn';
 
-const router = express.Router()
+const router = express.Router() // eslint-disable-line new-cap
 
 router.get('/logout', (req, res) => {
   req.logout()

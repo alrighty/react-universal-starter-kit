@@ -1,9 +1,9 @@
 // Some code from: https://github.com/ryanflorence/async-props/blob/master/modules/AsyncProps.js
 
 const eachComponents = (components, iterator) => {
-  for (var i = 0, l = components.length; i < l; i++) {
+  for (let i = 0, l = components.length; i < l; i++) {
     if (typeof components[i] === 'object') {
-      for (var key in components[i]) {
+      for (const key in components[i]) { // eslint-disable-line guard-for-in, no-restricted-syntax
         iterator(components[i][key])
       }
     } else {
@@ -13,19 +13,18 @@ const eachComponents = (components, iterator) => {
 }
 
 const filterAndFlattenComponents = (components) => {
-  var flattened = []
+  const flattened = []
   eachComponents(components, (Component) => {
-    if (Component && Component.fetchData)
+    if (Component && Component.fetchData) {
       flattened.push(Component)
+    }
   })
   return flattened
 }
 
-const fetchAllData = (components, props) => {
-  return components.map(
-    (Component) => Component.fetchData(props)
-  )
-}
+const fetchAllData = (components, props) => components.map(
+  (Component) => Component.fetchData(props)
+)
 
 export default function fetchAsyncData(rawComponents, props) {
   const components = filterAndFlattenComponents(rawComponents)
