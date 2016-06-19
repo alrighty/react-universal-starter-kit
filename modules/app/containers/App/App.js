@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import styles from './App.css';
+import React, { Component, PropTypes } from 'react'
+import styles from './App.css'
 
 export default class App extends Component {
   static propTypes = {
@@ -11,6 +11,6 @@ export default class App extends Component {
       <div className={styles.app}>
         {this.props.children}
       </div>
-    );
+    )
   }
 }

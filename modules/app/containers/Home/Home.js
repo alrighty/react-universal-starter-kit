@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { login, logout, checkAuth } from 'app/actions/auth';
-import styles from './Home.css';
+import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { login, logout, checkAuth } from 'app/actions/auth'
+import styles from './Home.css'
 
 const mapStateToProps = (state) => ({
   user: state.auth.user
@@ -46,6 +46,6 @@ export default class Home extends Component {
           <p>Login with <a href="/api/auth/github">GitHub</a></p>
         }
       </div>
-    );
+    )
   }
 }
