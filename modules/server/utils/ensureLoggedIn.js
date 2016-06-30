@@ -13,10 +13,3 @@ export default function ensureLoggedIn(req, res, next) {
     next()
   }
 }
-
-export function checkLoggedIn(req) {
-  return invariant(
-    !req.isAuthenticated || !req.isAuthenticated(),
-    'You\'re not logged in'
-  )
-}
