@@ -24,6 +24,8 @@ const { host, port } = config.server
 const statsFile = path.resolve(__dirname, '../../stats.json')
 const publicDir = path.resolve(__dirname, '../../public')
 
+// Use native promises in Mongoose
+mongoose.Promise = Promise
 // Connect to MongoDB
 mongoose.connect(config.mongodb.uri)
 

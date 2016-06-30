@@ -6,6 +6,9 @@ module.exports = {
   mongodb: {
     uri: 'mongodb://localhost/react-universal-starter-kit'
   },
+  graphql: {
+    ide: false
+  },
   session: {
     key: 'sid',
     secret: 'keyboard cat'

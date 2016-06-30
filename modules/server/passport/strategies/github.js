@@ -1,5 +1,5 @@
 import GitHub from 'passport-github'
-import { User } from 'server/models'
+import { User } from 'server/data/models'
 import config from 'config'
 
 const { clientID, clientSecret, callbackURL } = config.github

@@ -1,4 +1,4 @@
-import { User } from 'server/models'
+import { User } from 'server/data/models'
 
 export const serializeUser = (user, done) => {
   done(null, user.id)

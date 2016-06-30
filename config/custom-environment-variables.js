@@ -6,6 +6,9 @@ module.exports = {
   mongodb: {
     uri: 'MONGODB_URI'
   },
+  graphql: {
+    ide: 'GRAPHIQL'
+  },
   session: {
     key: 'SESSION_KEY',
     secret: 'SESSION_SECRET'
