@@ -1,5 +1,3 @@
-import invariant from 'invariant'
-
 /*
  * Check the request if the user is authenticated.
  * Return an error message if not, otherwise keep going

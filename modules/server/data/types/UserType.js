@@ -4,6 +4,7 @@ import {
   GraphQLID
 } from 'graphql'
 import AuthType from './AuthType'
+import { allPosts } from '../queries'
 
 export default new GraphQLObjectType({
   name: 'User',
@@ -16,6 +17,7 @@ export default new GraphQLObjectType({
     },
     github: {
       type: AuthType
-    }
+    },
+    ownPosts: allPosts
   })
 })

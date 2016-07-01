@@ -3,6 +3,8 @@ import {
   GraphQLString,
   GraphQLID
 } from 'graphql'
+import UserType from './UserType'
+import { User } from '../models'
 
 export default new GraphQLObjectType({
   name: 'Post',
@@ -15,6 +17,10 @@ export default new GraphQLObjectType({
     },
     text: {
       type: GraphQLString
+    },
+    author: {
+      type: UserType,
+      resolve: (post) => User.findById(post.author)
     }
   })
 })

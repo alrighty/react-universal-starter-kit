@@ -1,0 +1,1 @@
+export createPost from './createPost'
