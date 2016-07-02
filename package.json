@@ -43,6 +43,7 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "serialize-javascript": "^1.2.0",
+    "serve-favicon": "^2.3.0",
     "tough-cookie": "^2.2.2"
   },
   "devDependencies": {

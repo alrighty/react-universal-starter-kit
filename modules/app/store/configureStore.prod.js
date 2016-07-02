@@ -1,11 +1,10 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
-import apiMiddleware from 'app/middleware/api';
+import { createStore, compose, applyMiddleware } from 'redux'
+import { routerMiddleware } from 'react-router-redux'
+import apiMiddleware from 'app/middleware/api'
 import thunkMiddleware from 'redux-thunk'
-import rootReducer from 'app/reducers';
+import rootReducer from 'app/reducers'
 
 export default function configureStore({ history, fetch, initialState }) {
-
   const store = createStore(
     rootReducer,
     initialState,
@@ -16,7 +15,7 @@ export default function configureStore({ history, fetch, initialState }) {
         routerMiddleware(history),
       )
     )
-  );
+  )
 
-  return store;
+  return store
 }

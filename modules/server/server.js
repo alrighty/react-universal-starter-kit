@@ -2,6 +2,7 @@ import path from 'path'
 import exphbs from 'express-handlebars'
 import config from 'config'
 import express from 'express'
+import favicon from 'serve-favicon'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import connectMongo from 'connect-mongo'
@@ -34,6 +35,8 @@ const MongoStorage = connectMongo(session)
 
 const app = express()
 
+
+app.use(favicon(path.resolve(publicDir, 'favicon.ico')))
 // Session and Cookie
 app.use(cookieParser())
 app.use(session({
