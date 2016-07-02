@@ -21,11 +21,18 @@ export default new GraphQLObjectType({
       type: AuthType
     },
     ownPosts: createPaginatedList(
-      'UserPosts',
+      'UserOwnPosts',
       'posts',
       PostType,
       Post,
       (root) => ({ author: root.id })
+    ),
+    likedPosts: createPaginatedList(
+      'UserLikedPosts',
+      'posts',
+      PostType,
+      Post,
+      (root) => ({ _id: { $in: root.likes } })
     )
   })
 })
