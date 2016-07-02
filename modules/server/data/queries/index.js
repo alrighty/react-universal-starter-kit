@@ -1,3 +1,5 @@
 export me from './me'
+export user from './user'
 export post from './post'
+export allUsers from './allUsers'
 export allPosts from './allPosts'

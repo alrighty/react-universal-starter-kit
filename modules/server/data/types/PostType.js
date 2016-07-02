@@ -5,6 +5,7 @@ import {
 } from 'graphql'
 import UserType from './UserType'
 import { User } from '../models'
+import { createPaginatedList } from '../connections'
 
 export default new GraphQLObjectType({
   name: 'Post',
@@ -21,6 +22,13 @@ export default new GraphQLObjectType({
     author: {
       type: UserType,
       resolve: (post) => User.findById(post.author)
-    }
+    },
+    likes: createPaginatedList(
+      'PostUsersLikes',
+      'users',
+      UserType,
+      User,
+      (root) => ({ likes: root.id })
+    )
   })
 })

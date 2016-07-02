@@ -7,7 +7,6 @@ import { Post } from '../models'
 import checkLoggedIn from 'server/utils/checkLoggedIn'
 
 export default {
-  name: 'CreatePost',
   type: PostType,
   args: {
     title: {

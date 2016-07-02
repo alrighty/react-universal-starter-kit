@@ -4,7 +4,9 @@ import {
   GraphQLID
 } from 'graphql'
 import AuthType from './AuthType'
-import { allPosts } from '../queries'
+import { PostType } from '../types'
+import { Post } from '../models'
+import { createPaginatedList } from '../connections'
 
 export default new GraphQLObjectType({
   name: 'User',
@@ -18,6 +20,12 @@ export default new GraphQLObjectType({
     github: {
       type: AuthType
     },
-    ownPosts: allPosts
+    ownPosts: createPaginatedList(
+      'UserPosts',
+      'posts',
+      PostType,
+      Post,
+      (root) => ({ author: root.id })
+    )
   })
 })
