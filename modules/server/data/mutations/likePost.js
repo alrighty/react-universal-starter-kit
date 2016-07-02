@@ -18,9 +18,11 @@ export default {
 
     const { user } = req
 
-    user.likes.push(id)
+    if (!user.likes.some(postId => postId.equals(id))) {
+      user.likes.push(id)
 
-    await user.save()
+      await user.save()
+    }
 
     return Post.findById(id)
   }
