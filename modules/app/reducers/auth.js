@@ -10,16 +10,16 @@ import {
   CHECK_AUTH,
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_ERROR
-} from 'app/constants/ActionTypes';
+} from 'app/constants/ActionTypes'
 
 const initialState = {
   isLoading: false,
   error: null,
-  user: null,
+  user: null
 }
 
 export default function(state = initialState, action) {
-  const { type, payload, error } = action;
+  const { type, payload, error } = action
 
   switch (type) {
 
@@ -27,21 +27,21 @@ export default function(state = initialState, action) {
     return {
       ...initialState,
       isLoading: true
-    };
+    }
 
   case LOGOUT:
   case CHECK_AUTH:
     return {
       ...state,
       isLoading: true
-    };
+    }
 
   case LOGIN_SUCCESS:
   case CHECK_AUTH_SUCCESS:
     return {
       ...initialState,
-      user: payload
-    };
+      user: payload.result.me
+    }
 
   case LOGOUT_SUCCESS:
     return initialState
@@ -52,9 +52,9 @@ export default function(state = initialState, action) {
     return {
       ...initialState,
       error
-    };
-  
+    }
+
   default:
-      return state;
+    return state
   }
 }

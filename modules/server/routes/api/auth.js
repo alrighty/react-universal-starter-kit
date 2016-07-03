@@ -1,19 +1,19 @@
 import express from 'express'
 import passport from 'server/passport'
-import ensureLoggedIn from 'server/utils/ensureLoggedIn';
+import ensureLoggedIn from 'server/utils/ensureLoggedIn'
 
 const router = express.Router() // eslint-disable-line new-cap
 
-router.get('/logout', (req, res) => {
-  req.logout()
-  res.send({
-    message: 'OK'
-  })
-})
+// router.get('/logout', (req, res) => {
+//   req.logout()
+//   res.send({
+//     message: 'OK'
+//   })
+// })
 
-router.get('/me', ensureLoggedIn, (req, res) => {
-  res.send(req.user.toJSON())
-})
+// router.get('/me', ensureLoggedIn, (req, res) => {
+//   res.send(req.user.toJSON())
+// })
 
 // GitHub Auth
 router.get('/github',

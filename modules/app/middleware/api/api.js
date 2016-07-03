@@ -1,110 +1,83 @@
-import { normalize } from 'normalizr';
-import { stringify } from 'query-string';
+import { normalize } from 'normalizr'
 
 // Action key that carries API call info interpreted by this Redux middleware.
-export const CALL_API = Symbol('Call API');
+export const CALL_API = Symbol('Call API')
 
-function fetchWithQuery(fetch, method, endpoint, data) {
-  return fetch(endpoint + (data ? '?' + stringify(data) : ''), {
-    type: method
-  })
-}
-
-function fetchWithBody(fetch, method, endpoint, data) {
-  return fetch(endpoint, {
-    type: method,
-    body: JSON.stringify(data)
-  })
-}
-
-const requestEnum = {
-  GET: (fetch, endpoint, data) => fetchWithQuery(fetch, 'GET', endpoint, data),
-  PUT: (fetch, endpoint, data) => fetchWithBody(fetch, 'PUT', endpoint, data),
-  POST: (fetch, endpoint, data) => fetchWithBody(fetch, 'POST', endpoint, data),
-  DELETE: (fetch, endpoint, data) => fetchWithQuery(fetch, 'DELETE', endpoint, data)
-};
-
-// Fetches an API response and normalizes the result JSON according to schema.
-// This makes every API response have the same shape, regardless of how nested it was.
-// Or pass API response to formatter if schema is not specified.
-function callApi(fetch, method, endpoint, data, schema, formatter) {
-  // Get request by method
-  const request = requestEnum[method]
-  // Make request
-  return request(fetch, endpoint, data)
-    .then(response => {
-      if (schema) {
-        return normalize(response.jsonData, schema)
-      } else {
-        return formatter(response.jsonData)
-      }
-    })
-}
-
-export default options => store => next => action => {
-  const callAPI = action[CALL_API];
-  if (typeof callAPI === 'undefined') {
-    return next(action);
-  }
-
-  const { fetch, prefix = '/api' } = options;
+export default options => {
+  const { fetch, endpoint = '/api/graphql' } = options
 
   if (!fetch) {
-    throw new Error('Custom fetch method is not specified.');
+    throw new Error('Custom fetch method is not specified.')
   }
 
-  let { method, formatter, endpoint } = callAPI;
-  const { schema, types, data } = callAPI;
-
-  if (!method) {
-    method = 'GET';
-  }
-  if (!formatter) {
-    formatter = (data) => data
-  }
-  if (typeof endpoint === 'string') {
-    endpoint = prefix + endpoint
-  }
-  if (typeof endpoint === 'function') {
-    endpoint = prefix + endpoint(store.getState())
-  }
-
-  if (typeof method !== 'string') {
-    throw new Error('Specify a string method type.');
-  }
-  if (!Object.keys(requestEnum).includes(method)) {
-    throw new Error('Expected method type to be one of ' + Object.keys(requestEnum) + ' types.');
-  }
-  if (typeof endpoint !== 'string') {
-    throw new Error('Specify a string endpoint URL.');
-  }
-  if (!schema && !formatter) {
-    throw new Error('Specify one of the exported Schemas or response formatter function');
-  }
-  if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.');
-  }
-  if (!types.every(type => typeof type === 'string')) {
-    throw new Error('Expected action types to be strings.');
+  function callGraphQLApi(query, variables, parseResponse) {
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        query,
+        variables
+      })
+    }).then(({ ok, jsonData }) => {
+      if (!ok) {
+        return Promise.reject(jsonData)
+      }
+      if (jsonData.errors) {
+        return Promise.reject(jsonData.errors)
+      }
+      return parseResponse(jsonData.data)
+    })
   }
 
-  function actionWith(data) {
-    const finalAction = Object.assign({}, action, data);
-    delete finalAction[CALL_API];
-    return finalAction;
+  return store => next => action => { // eslint-disable-line no-unused-vars
+    const callAPI = action[CALL_API]
+    if (typeof callAPI === 'undefined') {
+      return next(action)
+    }
+
+    const { types, query, variables, schema, formatter = (data) => data } = callAPI
+
+    if (typeof query !== 'string') {
+      throw new Error('Specify a string graphql query.')
+    }
+    if (typeof endpoint !== 'string') {
+      throw new Error('Specify a string endpoint URL.')
+    }
+    if (!schema && !formatter) {
+      throw new Error('Specify one of the exported Schemas or response formatter function')
+    }
+    if (!types.every(type => typeof type === 'string')) {
+      throw new Error('Expected action types to be strings.')
+    }
+
+    function parseResponse(data) {
+      if (!schema) {
+        return formatter(data)
+      }
+      return normalize(data, schema)
+    }
+
+    function actionWith(data) {
+      const finalAction = Object.assign({}, action, data)
+      delete finalAction[CALL_API]
+      return finalAction
+    }
+
+    const [requestType, successType, failureType] = types
+    next(actionWith({ type: requestType }))
+
+    return callGraphQLApi(query, variables, parseResponse).then(
+      response => next(actionWith({
+        payload: response,
+        type: successType
+      })),
+      error => next(actionWith({
+        type: failureType,
+        error: error || 'Something bad happened'
+      }))
+    )
   }
-
-  const [requestType, successType, failureType] = types;
-  next(actionWith({ type: requestType }));
-
-  return callApi(fetch, method, endpoint, data, schema, formatter).then(
-    response => next(actionWith({
-      payload: response,
-      type: successType
-    })),
-    error => next(actionWith({
-      type: failureType,
-      error: error.message || 'Something bad happened'
-    }))
-  );
-};
+}

@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { login, logout, checkAuth } from 'app/actions/auth'
+import { logout, checkAuth } from 'app/actions/auth'
 import styles from './Home.css'
 
 const mapStateToProps = (state) => ({
-  user: state.auth.user
+  user: state.entities.users[state.auth.user]
 })
 
 const mapDispatchToProps = {
-  login,
   logout,
   checkAuth
 }

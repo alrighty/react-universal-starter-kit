@@ -10,10 +10,10 @@ import {
   CHECK_AUTH,
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_ERROR
-} from 'app/constants/ActionTypes';
-import { CALL_API /*, Schemas */ } from 'app/middleware/api';
+} from 'app/constants/ActionTypes'
+import { CALL_API, Schemas } from 'app/middleware/api'
 
-export function login(values) {
+export function login(email, password) {
   return {
     [CALL_API]: {
       types: [
@@ -21,14 +21,23 @@ export function login(values) {
         LOGIN_SUCCESS,
         LOGIN_ERROR
       ],
-      method: 'GET',
-      endpoint: '/auth/login',
-      data: values,
-      formatter: (json) => console.log(json)
-      // schema: Schemas.USER
-    },
-    meta: { values }
-  };
+      variables: {
+        email,
+        password
+      },
+      query: `
+        mutation {
+          login($email: String!, $password: String!) {
+            id
+            name
+            github {
+              username
+            }
+          }
+        }
+      `
+    }
+  }
 }
 
 export function logout() {
@@ -37,13 +46,17 @@ export function logout() {
       types: [
         LOGOUT,
         LOGOUT_SUCCESS,
-        LOGOUT_ERROR,
+        LOGOUT_ERROR
       ],
-      method: 'GET',
-      endpoint: '/auth/logout',
-      formatter: () => {}
+      query: `
+        mutation {
+          logout {
+            id
+          }
+        }
+      `
     }
-  };
+  }
 }
 
 export function checkAuth() {
@@ -54,9 +67,20 @@ export function checkAuth() {
         CHECK_AUTH_SUCCESS,
         CHECK_AUTH_ERROR
       ],
-      method: 'GET',
-      endpoint: '/auth/me',
-      formatter: (json) => json
+      schema: {
+        me: Schemas.USER
+      },
+      query: `
+        query {
+          me {
+            id
+            name
+            github {
+              username
+            }
+          }
+        }
+      `
     }
-  };
+  }
 }

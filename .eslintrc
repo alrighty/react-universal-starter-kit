@@ -8,7 +8,11 @@
   },
   "rules": {
     "semi": [2, "never"],
+    "indent": ["error", 2, { "SwitchCase": 0 }],
     "comma-dangle": [2, "never"],
+    "space-before-function-paren": [2, "never"],
+    "quote-props": [2, "consistent"],
+    "no-else-return": 0,
     "no-shadow": 0,
     "react/prefer-stateless-function": 0
   },
